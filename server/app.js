@@ -11,20 +11,25 @@ app.use(bodyParser.json());
 
 // Routes
 const categoryRoutes = require("./routes/categories");
-app.use(`/api/category`, categoryRoutes);
+const productRoutes = require("./routes/products");
+app.use("/api/category", categoryRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/category", categoryRoutes);
+
 
 // DB connection
-mongoose.connect(process.env.MONGO_URI, {
+mongoose
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
+    useUnifiedTopology: true,
+  })
+  .then(() => {
     console.log("✅ Connected to MongoDB Atlas!");
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 5001; // run backend on 5001
     app.listen(PORT, () => {
-        console.log(`🚀 Server is running at http://localhost:${PORT}`);
+      console.log(`🚀 Server is running at http://localhost:${PORT}`);
     });
-})
-.catch((err) => {
-    console.log("❌ MongoDB connection error:", err);
-});
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err);
+  });
